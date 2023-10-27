@@ -675,7 +675,7 @@
 					</svg>
 				</button>
 			</div>
-			<select name="eglise" id="churchSelect">
+			<select name="eglise" id="churchSelect" onchange="performSearchOnSelectChange()">
 				<option value="">Sélectionnez une église</option>
 				<option value="Bruxelles">Bruxelles</option>
 				<option value="Liège">Liège</option>
@@ -736,6 +736,10 @@
 				}
 			}
 
+			
+
+			
+
 			fetch(apiUrl)
 				.then((response) => response.json())
 				.then((data) => {
@@ -787,6 +791,12 @@
 					}
 				})
 				.catch((error) => console.error("Erreur de recherche :", error));
+
+			 // Check if there are no results
+			 if (Array.isArray(data.data) && data.data.length === 0) {
+                var userDataList = document.getElementById("contenair-slide");
+                userDataList.innerHTML = "Aucun résultat trouvé.";
+            }
 		}
 
 		// Fonction pour afficher le formulaire étendu
@@ -854,7 +864,11 @@
 			pdp.style.backgroundImage = "url(../img/" + imageFileName + ")";
 		}
 
-
+		 // This function is called when the select element is changed
+		 function performSearchOnSelectChange() {
+            // Automatically trigger a search when the select option changes
+            performSearch();
+        }
 
 		// Appeler performSearch lors du chargement de la page pour afficher tous les éléments par défaut
 		window.onload = performSearch;
